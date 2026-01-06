@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Quiz App</title>
+</head>
+<body>
+    <h1>Головна сторінка</h1>
+
+    {% if user.is_authenticated %}
+        <p>Привіт, {{ user.username }}!</p>
+        <a href="#">Перейти до квізів</a>
+    {% else %}
+        <a href="/login/">Увійти</a>
+    {% endif %}
+</body>
+</html>
