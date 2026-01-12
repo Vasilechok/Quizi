@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Мої квізи</title>
+</head>
+<body>
+    <h1>Мої квізи</h1>
+
+    {% if quizzes %}
+        <ul>
+            {% for quiz in quizzes %}
+                <li>
+                    <strong>{{ quiz.title }}</strong>
+
+                    <a href="{% url 'quiz_detail' quiz.id %}">
+                        <button>✏️ Редагувати питання</button>
+                    </a>
+
+                    <a href="{% url 'quiz_edit' quiz.id %}">
+                        <button>✏️  Редагувати початок</button>
+                    </a>
+
+                    <a href="{% url 'quiz_delete' quiz.id %}">
+                        <button>🗑 Видалити</button>
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>У тебе ще немає квізів.</p>
+    {% endif %}
+
+    <br>
+    <a href="{% url 'home' %}">⬅ На головну</a>
+</body>
+</html>

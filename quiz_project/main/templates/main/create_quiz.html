@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Створити вікторину</title>
+</head>
+<body>
+    <h1>Створити вікторину</h1>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Питання</button>
+    </form>
+
+
+    <a href="{% url 'home' %}">Назад</a>
+</body>
+</html>

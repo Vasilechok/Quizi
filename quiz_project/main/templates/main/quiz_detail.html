@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ quiz.title }}</title>
+</head>
+<body>
+    <h1>{{ quiz.title }}</h1>
+    <p>{{ quiz.description }}</p>
+
+    <hr>
+
+    <h2>Питання</h2>
+
+    {% if questions %}
+        <ul>
+            {% for question in questions %}
+                <li>{{ question.text }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Питань ще немає.</p>
+    {% endif %}
+
+    <a href="{% url 'add_question' quiz.id %}">
+        <button type="button">➕ Додати питання</button>
+    </a>
+
+    {% if quiz.image %}
+        <img src="{{ quiz.image.url }}" width="300">
+    {% else %}
+        <a href="{% url 'quiz_add_image' quiz.id %}">
+            <button type="button">🖼 Додати фото</button>
+        </a>
+    {% endif %}
+
+
+    {% if quiz.questions.count >= 2 %}
+        <form method="post" action="{% url 'quiz_publish' quiz.id %}">
+            {% csrf_token %}
+            <button type="submit">Створити</button>
+        </form>
+    {% else %}
+        <p style="color: gray;">
+            Додайте щонайменше 2 питання, щоб створити квіз
+        </p>
+    {% endif %}
+
+
+</body>
+</html>

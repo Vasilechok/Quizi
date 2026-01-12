@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Додати питання</title>
+</head>
+<body>
+
+    <h1>Додати питання до "{{ quiz.title }}"</h1>
+
+    <form method="post">
+        {% csrf_token %}
+
+        {{ form.as_p }}
+
+        <h3>Відповіді</h3>
+
+        <p>
+            <input type="radio" name="correct" value="1" required>
+            <input type="text" name="answer_1" placeholder="Відповідь 1" required>
+        </p>
+
+        <p>
+            <input type="radio" name="correct" value="2">
+            <input type="text" name="answer_2" placeholder="Відповідь 2" required>
+        </p>
+
+        <p>
+            <input type="radio" name="correct" value="3">
+            <input type="text" name="answer_3" placeholder="Відповідь 3">
+        </p>
+
+        <p>
+            <input type="radio" name="correct" value="4">
+            <input type="text" name="answer_4" placeholder="Відповідь 4">
+        </p>
+
+        <!-- КНОПКА ЗБЕРЕГТИ ПИТАННЯ -->
+        <button type="submit">Зберегти питання</button>
+    </form>
+
+    <br>
+
+
+</body>
+</html>

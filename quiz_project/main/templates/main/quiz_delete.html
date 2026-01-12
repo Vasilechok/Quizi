@@ -1,0 +1,11 @@
+<h1>Видалити квіз</h1>
+
+<p>Ти впевнений, що хочеш видалити квіз "{{ quiz.title }}"?</p>
+
+<form method="post">
+    {% csrf_token %}
+    <button type="submit">Так, видалити</button>
+</form>
+
+<a href="{% url 'my_quizzes' %}">Скасувати</a>
+    

@@ -1,0 +1,9 @@
+<h1>Редагувати квіз</h1>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Зберегти</button>
+</form>
+
+<a href="{% url 'my_quizzes' %}">⬅ Назад</a>

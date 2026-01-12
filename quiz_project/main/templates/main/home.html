@@ -9,9 +9,31 @@
 
     {% if user.is_authenticated %}
         <p>Привіт, {{ user.username }}!</p>
-        <a href="#">Перейти до квізів</a>
+
+        <form action="{% url 'create_quiz' %}" method="get">
+            <button type="submit">➕ Створити вікторину</button>
+        </form>
+
+        <br>
+
+        <form action="{% url 'my_quizzes' %}" method="get">
+            <button type="submit">📚 Мої квізи</button>
+        </form>
+
+
+        <br>
+
+        <form action="{% url 'logout' %}" method="post">
+            {% csrf_token %}
+            <button type="submit">Вийти</button>
+        </form>
+
     {% else %}
-        <a href="/login/">Увійти</a>
+
+        <form action="{% url 'login' %}" method="get">
+            <button type="submit">Увійти</button>
+        </form>
+
     {% endif %}
 </body>
 </html>

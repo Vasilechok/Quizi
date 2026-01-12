@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Додати фото</title>
+</head>
+<body>
+    <h1>Додати фото до "{{ quiz.title }}"</h1>
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="file" name="image" required>
+        <br><br>
+        <button type="submit">Зберегти</button>
+    </form>
+
+    <a href="{% url 'quiz_detail' quiz.id %}">⬅ Назад</a>
+</body>
+</html>
+    
