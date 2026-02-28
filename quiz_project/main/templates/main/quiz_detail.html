@@ -3,12 +3,125 @@
 <head>
     <meta charset="UTF-8">
     <title>{{ quiz.title }}</title>
-</head>
-<body>
-    <h1>{{ quiz.title }}</h1>
-    <p>{{ quiz.description }}</p>
 
-    <hr>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: "Segoe UI", Tahoma, sans-serif;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: radial-gradient(circle at top, #0f1f17, #000);
+            color: #e5ffe5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            background: linear-gradient(180deg, #0b1b14, #020504);
+            border: 1px solid #1aff8c55;
+            border-radius: 18px;
+            padding: 40px 50px;
+            width: 100%;
+            max-width: 700px;
+            box-shadow:
+                0 0 25px #00ff8855,
+                inset 0 0 20px #00ff8844;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 32px;
+            color: #1aff8c;
+            text-shadow: 0 0 10px #00ff88;
+        }
+
+        .description {
+            text-align: center;
+            opacity: 0.9;
+            margin-bottom: 30px;
+        }
+
+        h2 {
+            margin-top: 30px;
+            margin-bottom: 15px;
+            color: #1aff8c;
+        }
+
+        ul {
+            padding-left: 20px;
+            margin-bottom: 20px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        .actions {
+            display: grid;
+            gap: 14px;
+            margin-top: 25px;
+        }
+
+        button {
+            width: 100%;
+            background: linear-gradient(135deg, #00ff88, #0fa);
+            color: #002b18;
+            border: none;
+            border-radius: 12px;
+            padding: 14px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            box-shadow: 0 0 12px #00ff8880;
+        }
+
+        button:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 0 20px #00ff88;
+        }
+
+        .secondary {
+            background: transparent;
+            color: #1aff8c;
+            border: 1px solid #1aff8c;
+            box-shadow: none;
+        }
+
+        .secondary:hover {
+            background: #1aff8c22;
+        }
+
+        .disabled {
+            color: gray;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        img {
+            display: block;
+            margin: 20px auto;
+            border-radius: 12px;
+            box-shadow: 0 0 15px #00ff8866;
+            max-width: 100%;
+        }
+
+        form {
+            margin: 0;
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+
+    <h1>{{ quiz.title }}</h1>
+    <p class="description">{{ quiz.description }}</p>
 
     <h2>Питання</h2>
 
@@ -22,30 +135,31 @@
         <p>Питань ще немає.</p>
     {% endif %}
 
-    <a href="{% url 'add_question' quiz.id %}">
-        <button type="button">➕ Додати питання</button>
-    </a>
-
-    {% if quiz.image %}
-        <img src="{{ quiz.image.url }}" width="300">
-    {% else %}
-        <a href="{% url 'quiz_add_image' quiz.id %}">
-            <button type="button">🖼 Додати фото</button>
+    <div class="actions">
+        <a href="{% url 'add_question' quiz.id %}">
+            <button type="button">➕ Додати питання</button>
         </a>
-    {% endif %}
 
+        {% if quiz.image %}
+            <img src="{{ quiz.image.url }}" alt="Quiz image">
+        {% else %}
+            <a href="{% url 'quiz_add_image' quiz.id %}">
+                <button type="button" class="secondary">🖼 Додати фото</button>
+            </a>
+        {% endif %}
 
-    {% if quiz.questions.count >= 2 %}
-        <form method="post" action="{% url 'quiz_publish' quiz.id %}">
-            {% csrf_token %}
-            <button type="submit">Створити</button>
-        </form>
-    {% else %}
-        <p style="color: gray;">
-            Додайте щонайменше 2 питання, щоб створити квіз
-        </p>
-    {% endif %}
+        {% if quiz.questions.count >= 2 %}
+            <form method="post" action="{% url 'quiz_publish' quiz.id %}">
+                {% csrf_token %}
+                <button type="submit">🚀 Створити квіз</button>
+            </form>
+        {% else %}
+            <p class="disabled">
+                Додайте щонайменше 2 питання, щоб створити квіз
+            </p>
+        {% endif %}
+    </div>
 
-
+</div>
 </body>
 </html>

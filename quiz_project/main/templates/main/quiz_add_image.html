@@ -3,18 +3,143 @@
 <head>
     <meta charset="UTF-8">
     <title>Додати фото</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: "Segoe UI", Tahoma, sans-serif;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: radial-gradient(circle at top, #0f1f17, #000);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #eafff2;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 520px;
+            background: linear-gradient(180deg, #0b1b14, #020504);
+            border: 1px solid #1aff8c55;
+            border-radius: 20px;
+            padding: 35px 40px;
+            box-shadow:
+                0 0 30px #00ff8855,
+                inset 0 0 20px #00ff8833;
+            text-align: center;
+        }
+
+        h1 {
+            color: #1aff8c;
+            margin-bottom: 25px;
+            text-shadow: 0 0 10px #00ff88;
+        }
+
+        .upload-box {
+            border: 2px dashed #1aff8c66;
+            border-radius: 16px;
+            padding: 30px 20px;
+            margin-bottom: 25px;
+            background: #06130e;
+            transition: all 0.2s ease;
+        }
+
+        .upload-box:hover {
+            border-color: #1aff8c;
+            box-shadow: 0 0 15px #00ff8880;
+        }
+
+        input[type="file"] {
+            color: #eafff2;
+            font-size: 14px;
+        }
+
+        input[type="file"]::file-selector-button {
+            background: linear-gradient(135deg, #00ff88, #0fa);
+            color: #002b18;
+            border: none;
+            border-radius: 10px;
+            padding: 8px 14px;
+            margin-right: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 0 10px #00ff8880;
+            transition: all 0.2s ease;
+        }
+
+        input[type="file"]::file-selector-button:hover {
+            box-shadow: 0 0 18px #00ff88;
+            transform: translateY(-2px);
+        }
+
+        button {
+            width: 100%;
+            background: linear-gradient(135deg, #00ff88, #0fa);
+            color: #002b18;
+            border: none;
+            border-radius: 14px;
+            padding: 12px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 0 14px #00ff8880;
+            transition: all 0.2s ease;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 22px #00ff88;
+        }
+
+        .back {
+            margin-top: 22px;
+        }
+
+        .back a {
+            color: #1aff8c;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .back a:hover {
+            text-decoration: underline;
+        }
+
+        .hint {
+            font-size: 13px;
+            opacity: 0.75;
+            margin-top: 8px;
+        }
+    </style>
 </head>
+
 <body>
-    <h1>Додати фото до "{{ quiz.title }}"</h1>
+<div class="container">
+    <h1>Додати фото</h1>
+    <p>до «{{ quiz.title }}»</p>
 
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        <input type="file" name="image" required>
-        <br><br>
-        <button type="submit">Зберегти</button>
+
+        <div class="upload-box">
+            <input type="file" name="image" required>
+            <div class="hint">
+                JPG, PNG або WEBP — будь-що підійде
+            </div>
+        </div>
+
+        <button type="submit">📸 Зберегти фото</button>
     </form>
 
-    <a href="{% url 'quiz_detail' quiz.id %}">⬅ Назад</a>
+    <div class="back">
+        <a href="{% url 'quiz_detail' quiz.id %}">⬅ Назад до квізу</a>
+    </div>
+</div>
 </body>
 </html>
+
     

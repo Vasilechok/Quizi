@@ -3,23 +3,139 @@
 <head>
     <meta charset="UTF-8">
     <title>Вхід</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: "Segoe UI", Tahoma, sans-serif;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: radial-gradient(circle at top, #0f1f17, #000);
+            color: #e5ffe5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            background: linear-gradient(180deg, #0b1b14, #020504);
+            border: 1px solid #1aff8c55;
+            border-radius: 18px;
+            padding: 40px 50px;
+            width: 100%;
+            max-width: 500px;
+            box-shadow:
+                0 0 25px #00ff8855,
+                inset 0 0 20px #00ff8844;
+            text-align: center;
+        }
+
+        h1 {
+            margin-bottom: 10px;
+            font-size: 32px;
+            color: #1aff8c;
+            text-shadow: 0 0 10px #00ff88;
+        }
+
+        p {
+            margin: 15px 0;
+        }
+
+        .error {
+            color: #ff4d4d;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        input[type="text"], input[type="password"] {
+            width: 100%;
+            padding: 12px 14px;
+            margin-top: 5px;
+            border-radius: 12px;
+            border: 1px solid #1aff8c55;
+            background: #020504;
+            color: #e5ffe5;
+            font-size: 16px;
+            box-shadow: inset 0 0 8px #00ff8844;
+            transition: all 0.2s ease;
+        }
+
+        input[type="text"]:focus,
+        input[type="password"]:focus {
+            border-color: #00ff88;
+            box-shadow: 0 0 12px #00ff88;
+            outline: none;
+        }
+
+        button {
+            background: linear-gradient(135deg, #00ff88, #0fa);
+            color: #002b18;
+            border: none;
+            border-radius: 12px;
+            padding: 14px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            box-shadow: 0 0 12px #00ff8880;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 0 20px #00ff88;
+        }
+
+        a {
+            color: #1aff8c;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        hr {
+            margin: 25px 0;
+            border: 0;
+            border-top: 1px solid #1aff8c33;
+        }
+    </style>
 </head>
+
 <body>
+<div class="container">
     <h1>Вхід</h1>
 
     {% if form.errors %}
-        <p style="color:red;">Неправильний логін або пароль</p>
+        <p class="error">❌ Неправильний логін або пароль</p>
     {% endif %}
 
     <form method="post">
         {% csrf_token %}
-        {{ form.username.label_tag }}<br>
-        {{ form.username }}<br><br>
 
-        {{ form.password.label_tag }}<br>
-        {{ form.password }}<br><br>
+        <p>
+            {{ form.username.label_tag }}<br>
+            {{ form.username }}
+        </p>
 
-        <button type="submit">Увійти</button>
+        <p>
+            {{ form.password.label_tag }}<br>
+            {{ form.password }}
+        </p>
+
+        <button type="submit">🔑 Увійти</button>
     </form>
+
+    <hr>
+
+    <p>
+        Немає акаунту?
+        <a href="{% url 'register' %}">Зареєструватися</a>
+    </p>
+</div>
 </body>
 </html>

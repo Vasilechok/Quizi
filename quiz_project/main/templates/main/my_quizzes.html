@@ -3,35 +3,170 @@
 <head>
     <meta charset="UTF-8">
     <title>Мої квізи</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: "Segoe UI", Tahoma, sans-serif;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: radial-gradient(circle at top, #0f1f17, #000);
+            color: #e5ffe5;
+            display: flex;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+            background: linear-gradient(180deg, #0b1b14, #020504);
+            border: 1px solid #1aff8c55;
+            border-radius: 18px;
+            padding: 35px 40px;
+            box-shadow:
+                0 0 30px #00ff8855,
+                inset 0 0 20px #00ff8833;
+        }
+
+        h1 {
+            text-align: center;
+            color: #1aff8c;
+            margin-bottom: 30px;
+            text-shadow: 0 0 10px #00ff88;
+        }
+
+        .quiz-list {
+            display: grid;
+            gap: 18px;
+        }
+
+        .quiz-card {
+            background: #07140f;
+            border: 1px solid #1aff8c44;
+            border-radius: 14px;
+            padding: 20px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 0 12px #00ff8833;
+        }
+
+        .quiz-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #eafff2;
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            background: linear-gradient(135deg, #00ff88, #0fa);
+            color: #002b18;
+            border: none;
+            border-radius: 10px;
+            padding: 8px 14px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 0 10px #00ff8880;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 18px #00ff88;
+        }
+
+        .secondary {
+            background: transparent;
+            color: #1aff8c;
+            border: 1px solid #1aff8c;
+            box-shadow: none;
+        }
+
+        .secondary:hover {
+            background: #1aff8c22;
+        }
+
+        .danger {
+            background: linear-gradient(135deg, #ff4d4d, #ff1a1a);
+            color: white;
+            box-shadow: 0 0 10px #ff4d4d88;
+        }
+
+        .danger:hover {
+            box-shadow: 0 0 18px #ff4d4d;
+        }
+
+        .empty {
+            text-align: center;
+            opacity: 0.85;
+            font-size: 18px;
+        }
+
+        .back {
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .back a {
+            color: #1aff8c;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .back a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
+
 <body>
+<div class="container">
     <h1>Мої квізи</h1>
 
     {% if quizzes %}
-        <ul>
+        <div class="quiz-list">
             {% for quiz in quizzes %}
-                <li>
-                    <strong>{{ quiz.title }}</strong>
+                <div class="quiz-card">
+                    <div class="quiz-title">
+                        {{ quiz.title }}
+                    </div>
 
-                    <a href="{% url 'quiz_detail' quiz.id %}">
-                        <button>✏️ Редагувати питання</button>
-                    </a>
+                    <div class="actions">
+                        <a href="{% url 'quiz_detail' quiz.id %}">
+                            <button>✏️ Питання</button>
+                        </a>
 
-                    <a href="{% url 'quiz_edit' quiz.id %}">
-                        <button>✏️  Редагувати початок</button>
-                    </a>
+                        <a href="{% url 'quiz_edit' quiz.id %}">
+                            <button class="secondary">⚙️ Налаштування</button>
+                        </a>
 
-                    <a href="{% url 'quiz_delete' quiz.id %}">
-                        <button>🗑 Видалити</button>
-                    </a>
-                </li>
+                        <a href="{% url 'quiz_delete' quiz.id %}">
+                            <button class="danger">🗑 Видалити</button>
+                        </a>
+                    </div>
+                </div>
             {% endfor %}
-        </ul>
+        </div>
     {% else %}
-        <p>У тебе ще немає квізів.</p>
+        <div class="empty">
+            У тебе ще немає квізів 😢<br>
+            Саме час створити перший 💚
+        </div>
     {% endif %}
 
-    <br>
-    <a href="{% url 'home' %}">⬅ На головну</a>
+    <div class="back">
+        <a href="{% url 'home' %}">⬅ На головну</a>
+    </div>
+</div>
 </body>
 </html>

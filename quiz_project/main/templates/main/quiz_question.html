@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ quiz.title }}</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: "Segoe UI", Tahoma, sans-serif;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: radial-gradient(circle at top, #0f1f17, #000);
+            color: #e5ffe5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            background: linear-gradient(180deg, #0b1b14, #020504);
+            border: 1px solid #1aff8c55;
+            border-radius: 18px;
+            padding: 40px 50px;
+            width: 100%;
+            max-width: 650px;
+            box-shadow:
+                0 0 25px #00ff8855,
+                inset 0 0 20px #00ff8844;
+            text-align: center;
+        }
+
+        h2 {
+            margin: 0;
+            color: #1aff8c;
+            text-shadow: 0 0 10px #00ff88;
+        }
+
+        .progress {
+            margin-top: 10px;
+            font-size: 14px;
+            opacity: 0.85;
+        }
+
+        h3 {
+            margin: 30px 0;
+            font-size: 22px;
+        }
+
+        .answers {
+            display: grid;
+            gap: 14px;
+        }
+
+        button.answer {
+            background: linear-gradient(135deg, #00ff88, #0fa);
+            color: #002b18;
+            border: none;
+            border-radius: 14px;
+            padding: 14px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 0 12px #00ff8880;
+        }
+
+        button.answer:hover {
+            transform: scale(1.04);
+            box-shadow: 0 0 22px #00ff88;
+        }
+
+        .timer {
+            margin-top: 20px;
+        }
+
+        .timer-text {
+            font-size: 14px;
+            margin-bottom: 6px;
+            opacity: 0.8;
+        }
+
+        .timer-bar {
+            height: 10px;
+            background: #1aff8c;
+            border-radius: 10px;
+            box-shadow: 0 0 15px #00ff88;
+            transition: width 1s linear;
+        }
+
+        .timer-bg {
+            width: 100%;
+            background: #1aff8c22;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+
+    <h2>{{ quiz.title }}</h2>
+    <div class="progress">
+        Питання {{ index }} з {{ total }}
+    </div>
+
+    <h3>{{ question.text }}</h3>
+
+    <form method="post" id="quizForm">
+        {% csrf_token %}
+
+        <div class="answers">
+            {% for answer in question.answers.all %}
+                <button
+                    class="answer"
+                    type="submit"
+                    name="answer"
+                    value="{{ answer.text }}">
+                    {{ answer.text }}
+                </button>
+            {% endfor %}
+        </div>
+    </form>
+
+    <div class="timer">
+        <div class="timer-text">
+            ⏱ Залишилось <span id="time">15</span> сек
+        </div>
+        <div class="timer-bg">
+            <div class="timer-bar" id="bar"></div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    let timeLeft = 15;
+    const timeEl = document.getElementById("time");
+    const bar = document.getElementById("bar");
+    const form = document.getElementById("quizForm");
+
+    const interval = setInterval(() => {
+        timeLeft--;
+        timeEl.textContent = timeLeft;
+        bar.style.width = (timeLeft / 15 * 100) + "%";
+
+        if (timeLeft <= 0) {
+            clearInterval(interval);
+            form.submit(); // автоматично переходить далі без відповіді
+        }
+    }, 1000);
+</script>
+
+</body>
+</html>

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ session.quiz.title }}</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: "Segoe UI", Tahoma, sans-serif;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: radial-gradient(circle at top, #0f1f17, #000);
+            color: #e5ffe5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            background: linear-gradient(180deg, #0b1b14, #020504);
+            border: 1px solid #1aff8c55;
+            border-radius: 20px;
+            padding: 40px 50px;
+            width: 100%;
+            max-width: 600px;
+            box-shadow:
+                0 0 30px #00ff8855,
+                inset 0 0 20px #00ff8844;
+            text-align: center;
+        }
+
+        h2 {
+            margin-bottom: 6px;
+            color: #1aff8c;
+            text-shadow: 0 0 10px #00ff88;
+        }
+
+        .progress {
+            font-size: 16px;
+            opacity: 0.85;
+            margin-bottom: 20px;
+        }
+
+        h3 {
+            font-size: 22px;
+            margin-bottom: 25px;
+        }
+
+        .timer {
+            font-size: 20px;
+            margin-bottom: 30px;
+        }
+
+        .timer span {
+            font-weight: bold;
+            color: #00ff88;
+            text-shadow: 0 0 10px #00ff88;
+            transition: color 0.3s ease, text-shadow 0.3s ease;
+        }
+
+        .timer.danger span {
+            color: #ff4d4d;
+            text-shadow: 0 0 12px #ff4d4d;
+            animation: pulse 0.8s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        form {
+            display: grid;
+            gap: 14px;
+        }
+
+        button {
+            background: linear-gradient(135deg, #00ff88, #0fa);
+            color: #002b18;
+            border: none;
+            border-radius: 14px;
+            padding: 14px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            box-shadow: 0 0 14px #00ff8880;
+        }
+
+        button:hover {
+            transform: translateY(-2px) scale(1.03);
+            box-shadow: 0 0 24px #00ff88;
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+
+    <h2>{{ session.quiz.title }}</h2>
+    <div class="progress">
+        Питання {{ index }} з {{ total }}
+    </div>
+
+    <h3>{{ question.text }}</h3>
+
+    <div class="timer" id="timer-box">
+        ⏳ Час: <span id="timer">{{ remaining }}</span> сек
+    </div>
+
+    <form method="post" id="answer-form">
+        {% csrf_token %}
+        {% for answer in question.answers.all %}
+            <button type="submit" name="answer" value="{{ answer.text }}">
+                {{ answer.text }}
+            </button>
+        {% endfor %}
+    </form>
+
+</div>
+
+<script>
+let time = {{ remaining }};
+const timerEl = document.getElementById("timer");
+const timerBox = document.getElementById("timer-box");
+const form = document.getElementById("answer-form");
+
+const interval = setInterval(() => {
+    time--;
+    timerEl.textContent = time;
+
+    if (time <= 5) {
+        timerBox.classList.add("danger");
+    }
+
+    if (time <= 0) {
+        clearInterval(interval);
+        form.submit();
+    }
+}, 1000);
+</script>
+
+</body>
+</html>

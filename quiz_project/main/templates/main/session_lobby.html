@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Лобі</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: "Segoe UI", Tahoma, sans-serif;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: radial-gradient(circle at top, #0f1f17, #000);
+            color: #e5ffe5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            background: linear-gradient(180deg, #0b1b14, #020504);
+            border: 1px solid #1aff8c55;
+            border-radius: 20px;
+            padding: 40px 50px;
+            width: 100%;
+            max-width: 520px;
+            box-shadow:
+                0 0 30px #00ff8855,
+                inset 0 0 20px #00ff8844;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 34px;
+            color: #1aff8c;
+            text-shadow: 0 0 12px #00ff88;
+        }
+
+        .code {
+            text-align: center;
+            font-size: 20px;
+            margin-bottom: 30px;
+        }
+
+        .code span {
+            color: #00ff88;
+            font-weight: bold;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px #00ff88;
+        }
+
+        h3 {
+            margin-bottom: 12px;
+            color: #aaffcc;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 30px;
+        }
+
+        li {
+            background: #00ff8811;
+            border: 1px solid #1aff8c33;
+            border-radius: 10px;
+            padding: 10px 14px;
+            margin-bottom: 10px;
+            box-shadow: inset 0 0 8px #00ff8822;
+        }
+
+        .host {
+            text-align: center;
+        }
+
+        button {
+            background: linear-gradient(135deg, #00ff88, #0fa);
+            color: #002b18;
+            border: none;
+            border-radius: 14px;
+            padding: 14px 24px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            box-shadow: 0 0 14px #00ff8880;
+        }
+
+        button:hover {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 0 24px #00ff88;
+        }
+
+        .waiting {
+            text-align: center;
+            font-size: 18px;
+            opacity: 0.85;
+        }
+
+        .waiting::after {
+            content: " ⏳";
+            animation: dots 1.5s infinite;
+        }
+
+        @keyframes dots {
+            0% { opacity: 0.3; }
+            50% { opacity: 1; }
+            100% { opacity: 0.3; }
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+
+    <h1>👥 Лобі</h1>
+
+    <div class="code">
+        Код гри: <span>{{ session.code }}</span>
+    </div>
+
+    <h3>Гравці</h3>
+    <ul>
+        {% for player in session.players.all %}
+            <li>🎮 {{ player.user.username }}</li>
+        {% endfor %}
+    </ul>
+
+    {% if user == session.host %}
+        <div class="host">
+            <form method="post" action="{% url 'start_session' session.code %}">
+                {% csrf_token %}
+                <button>▶ Почати гру</button>
+            </form>
+        </div>
+    {% else %}
+        <div class="waiting">
+            Очікуємо старту
+        </div>
+    {% endif %}
+
+</div>
+
+<!-- WebSocket підключення -->
+<script>
+    const socket = new WebSocket(
+        'ws://' + window.location.host + '/ws/session/{{ session.code }}/'
+    );
+
+    socket.onmessage = function(e) {
+        const data = JSON.parse(e.data);
+
+        if (data.type === "start_game") {
+            window.location.href = "{% url 'session_question' session.code %}";
+        }
+    };
+
+    socket.onclose = function() {
+        console.log("WebSocket закрито");
+    };
+</script>
+
+</body>
+</html>

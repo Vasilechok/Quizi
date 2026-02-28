@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Доступні вікторини</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: "Segoe UI", Tahoma, sans-serif;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: radial-gradient(circle at top, #0f1f17, #000);
+            color: #e5ffe5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            background: linear-gradient(180deg, #0b1b14, #020504);
+            border: 1px solid #1aff8c55;
+            border-radius: 18px;
+            padding: 40px 50px;
+            width: 100%;
+            max-width: 700px;
+            box-shadow:
+                0 0 25px #00ff8855,
+                inset 0 0 20px #00ff8844;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 32px;
+            color: #1aff8c;
+            text-shadow: 0 0 10px #00ff88;
+        }
+
+        .join-box {
+            background: #020504;
+            border: 1px dashed #1aff8c55;
+            border-radius: 14px;
+            padding: 20px;
+            margin-bottom: 35px;
+            text-align: center;
+        }
+
+        .join-box h2 {
+            margin-top: 0;
+            color: #1aff8c;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            border-radius: 10px;
+            border: 1px solid #1aff8c55;
+            background: #000;
+            color: #e5ffe5;
+            font-size: 15px;
+            margin-bottom: 12px;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #1aff8c;
+            box-shadow: 0 0 10px #00ff8880;
+        }
+
+        .quiz-card {
+            background: #020504;
+            border: 1px solid #1aff8c33;
+            border-radius: 16px;
+            padding: 22px;
+            margin-bottom: 20px;
+            box-shadow: inset 0 0 10px #00ff8822;
+        }
+
+        .quiz-card h3 {
+            margin-top: 0;
+            color: #1aff8c;
+        }
+
+        .quiz-card p {
+            opacity: 0.85;
+        }
+
+        .actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 15px;
+        }
+
+        button {
+            width: 100%;
+            background: linear-gradient(135deg, #00ff88, #0fa);
+            color: #002b18;
+            border: none;
+            border-radius: 12px;
+            padding: 12px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            box-shadow: 0 0 12px #00ff8880;
+        }
+
+        button:hover {
+            transform: translateY(-2px) scale(1.03);
+            box-shadow: 0 0 20px #00ff88;
+        }
+
+        .secondary {
+            background: transparent;
+            color: #1aff8c;
+            border: 1px solid #1aff8c;
+            box-shadow: none;
+        }
+
+        .secondary:hover {
+            background: #1aff8c22;
+        }
+
+        form {
+            margin: 0;
+        }
+
+        a {
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+
+    <h1>🎮 Доступні вікторини</h1>
+
+    <div class="join-box">
+        <h2>Гра за кодом</h2>
+
+        <form method="post" action="{% url 'join_by_code' %}">
+            {% csrf_token %}
+            <input type="text" name="code" placeholder="Введи код сесії">
+            <button type="submit">🚀 Приєднатися</button>
+        </form>
+    </div>
+
+    {% for quiz in quizzes %}
+        <div class="quiz-card">
+            <h3>{{ quiz.title }}</h3>
+            <p>{{ quiz.description }}</p>
+
+            <div class="actions">
+                <a href="{% url 'quiz_start' quiz.id %}">
+                    <button>▶ Самому</button>
+                </a>
+
+                <a href="{% url 'create_session' quiz.id %}">
+                    <button class="secondary">👥 З друзями</button>
+                </a>
+            </div>
+        </div>
+    {% empty %}
+        <p style="text-align:center; opacity:0.7;">
+            Поки що немає доступних вікторин 😢
+        </p>
+    {% endfor %}
+
+</div>
+</body>
+</html>

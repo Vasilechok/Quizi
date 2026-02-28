@@ -29,8 +29,14 @@ class Question(models.Model):
     text = models.CharField(max_length=500)
     order = models.PositiveIntegerField(default=0)
 
+    correct_answer = models.CharField(
+        max_length=255,
+        help_text="Правильна відповідь (тимчасово як текст)"
+    )
+
     def __str__(self):
         return self.text
+
 
 
 class Answer(models.Model):
@@ -66,3 +72,21 @@ class Result(models.Model):
 
 
 
+
+
+class QuizSession(models.Model):
+    quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
+    host = models.ForeignKey(User, on_delete=models.CASCADE)
+    code = models.CharField(max_length=6, unique=True)
+
+    current_question = models.PositiveIntegerField(default=0)
+    question_started_at = models.DateTimeField(null=True, blank=True)
+
+    started = models.BooleanField(default=False)
+
+
+
+class SessionPlayer(models.Model):
+    session = models.ForeignKey(QuizSession, on_delete=models.CASCADE, related_name="players")
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    score = models.IntegerField(default=0)

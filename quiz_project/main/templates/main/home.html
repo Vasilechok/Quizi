@@ -3,37 +3,136 @@
 <head>
     <meta charset="UTF-8">
     <title>Quiz App</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: "Segoe UI", Tahoma, sans-serif;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: radial-gradient(circle at top, #0f1f17, #000);
+            color: #e5ffe5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            background: linear-gradient(180deg, #0b1b14, #020504);
+            border: 1px solid #1aff8c55;
+            border-radius: 18px;
+            padding: 40px 50px;
+            width: 100%;
+            max-width: 500px;
+            box-shadow:
+                0 0 25px #00ff8855,
+                inset 0 0 20px #00ff8844;
+            text-align: center;
+        }
+
+        h1 {
+            margin-bottom: 10px;
+            font-size: 32px;
+            color: #1aff8c;
+            text-shadow: 0 0 10px #00ff88;
+        }
+
+        .welcome {
+            margin-bottom: 30px;
+            font-size: 18px;
+            opacity: 0.9;
+        }
+
+        .actions {
+            display: grid;
+            gap: 14px;
+            margin-top: 20px;
+        }
+
+        button {
+            background: linear-gradient(135deg, #00ff88, #0fa);
+            color: #002b18;
+            border: none;
+            border-radius: 12px;
+            padding: 14px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            box-shadow: 0 0 12px #00ff8880;
+        }
+
+        button:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 0 20px #00ff88;
+        }
+
+        .secondary {
+            background: transparent;
+            color: #1aff8c;
+            border: 1px solid #1aff8c;
+            box-shadow: none;
+        }
+
+        .secondary:hover {
+            background: #1aff8c22;
+        }
+
+        .logout {
+            background: linear-gradient(135deg, #ff4d4d, #ff1a1a);
+            color: white;
+            box-shadow: 0 0 12px #ff4d4d80;
+        }
+
+        .logout:hover {
+            box-shadow: 0 0 20px #ff4d4d;
+        }
+
+        form {
+            margin: 0;
+        }
+    </style>
 </head>
+
 <body>
-    <h1>Головна сторінка</h1>
+<div class="container">
+    <h1>Quiz App</h1>
 
     {% if user.is_authenticated %}
-        <p>Привіт, {{ user.username }}!</p>
+        <div class="welcome">
+            Привіт, <strong>{{ user.username }}</strong> 👋
+        </div>
 
-        <form action="{% url 'create_quiz' %}" method="get">
-            <button type="submit">➕ Створити вікторину</button>
-        </form>
+        <div class="actions">
+            <form action="{% url 'create_quiz' %}" method="get">
+                <button>➕ Створити вікторину</button>
+            </form>
 
-        <br>
+            <form action="{% url 'my_quizzes' %}" method="get">
+                <button class="secondary">📚 Мої квізи</button>
+            </form>
 
-        <form action="{% url 'my_quizzes' %}" method="get">
-            <button type="submit">📚 Мої квізи</button>
-        </form>
+            <form action="{% url 'quiz_list' %}" method="get">
+                <button class="secondary">🎮 Вікторини інших</button>
+            </form>
 
-
-        <br>
-
-        <form action="{% url 'logout' %}" method="post">
-            {% csrf_token %}
-            <button type="submit">Вийти</button>
-        </form>
+            <form action="{% url 'logout' %}" method="post">
+                {% csrf_token %}
+                <button class="logout">Вийти</button>
+            </form>
+        </div>
 
     {% else %}
-
-        <form action="{% url 'login' %}" method="get">
-            <button type="submit">Увійти</button>
-        </form>
-
+        <div class="actions">
+            <form action="{% url 'login' %}" method="get">
+                <button>🔐 Увійти</button>
+            </form>
+        </div>
     {% endif %}
+</div>
 </body>
 </html>
+
