@@ -187,7 +187,7 @@ def quiz_question(request, quiz_id):
     if request.method == "POST":
         selected = request.POST.get("answer")
 
-        if selected == question.correct_answer:
+        if selected.strip().lower() == question.correct_answer.strip().lower():
             request.session["score"] += 1
 
         request.session["question_index"] += 1
@@ -199,7 +199,7 @@ def quiz_question(request, quiz_id):
         "index": index + 1,
         "total": len(questions)
     })
-\
+
 
 
 
@@ -319,9 +319,9 @@ def session_question(request, code):
     if request.method == "POST":
         selected = request.POST.get("answer")
 
-        if selected == question.correct_answer:
+        if selected.strip().lower() == question.correct_answer.strip().lower():
             
-            pass
+            request.session["score"] += 1
 
         session.current_question += 1
         session.question_started_at = timezone.now()
