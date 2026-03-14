@@ -1,0 +1,10 @@
+Запускай проєкт наступними командами
+
+Підготовка:
+
+cd quiz_project
+venv\Scripts\activate
+
+Сам запуск: 
+
+daphne quiz_project.asgi:application
